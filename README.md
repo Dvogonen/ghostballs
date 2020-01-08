@@ -1,2 +1,2 @@
-# ghostballs
-Simple bouncing ball games using pygame library
+# Ghostballs
+Simple python bouncing ball games using pygame library
