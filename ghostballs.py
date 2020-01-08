@@ -429,8 +429,8 @@ class Hiscore:
         self.hiscore_data_tulist = []
         self.filename = filename
         self.server = 'ftp.lillhagsvagen.se'
-        self.username = 'lillhagsvagen.se'
-        self.password = 'lillhagsvagen'
+        self.username = 'xxxxxxxxxxx'
+        self.password = 'xxxxxxxxxxx'
         self.text_rec = (0, 0, 0, 0)
         self.reset()
 
