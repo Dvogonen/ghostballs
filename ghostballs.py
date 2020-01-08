@@ -66,9 +66,6 @@ class Color:
         return new_color[0], new_color[1], new_color[2]
 
 
-color = Color()
-
-
 # dynamic global variables collected in class
 class Globals:
     def __init__(self):
@@ -280,7 +277,7 @@ class Defender:
     def hit(self, pos: tuple) -> bool:
         poslist = []
         for x in range(-4, 5, 1):
-            for y in range(-1, 1, 1):
+            for y in range(-1, 2, 1):
                 poslist.append((self.pos[0] + x, self.pos[1] + y))
         if pos in poslist:
             click_sound.play()
@@ -330,11 +327,19 @@ class Defender:
         self.draw_cell(self.pos, color.defender, color.defender_border)
 
     def step(self):
+        new_pos = (0, 0)
         if self.toward != directions['stopped']:
             new_pos = (self.pos[0] + self.toward[0], self.pos[1] + self.toward[1])
-            if not self.frame.hit(new_pos):
-                self.old_pos = self.pos
-                self.pos = new_pos
+
+        for x in range(-4, 5, 1):
+            for y in range(-1, 1, 1):
+                temp_pos = (new_pos[0] + x, new_pos[1] + y)
+                #                if self.frame.hit(temp_pos) or blocks.hit(temp_pos) or targets.hit(temp_pos):
+                if self.frame.hit(temp_pos):
+                    return
+
+        self.old_pos = self.pos
+        self.pos = new_pos
 
 
 class Ball:
@@ -397,10 +402,11 @@ class Ball:
 
 
 # global objects
+g = Globals()
 target_positions = Tracks('gbtargets.txt')
 block_positions = Tracks('gbblocks.txt')
-g = Globals()
 board = Board()
+color = Color()
 info = Info((0, board.board_size[1]))
 frame = Frame(board, info)
 targets = Targets(frame, target_positions)
@@ -409,7 +415,6 @@ shaders = Shaders()
 defender = Defender(frame)
 ball = Ball(targets, blocks, defender, frame)
 window = pygame.display.set_mode((frame.x_size(), frame.y_size()))
-pygame.display.set_caption("Ghost Balls")
 
 # The hiscore storage and the storage function needs to be global
 hiscore_raw_data = b""
@@ -510,11 +515,8 @@ class Hiscore:
         pygame.display.update()
 
 
-# hiscore = Hiscore('gbhiscore.txt')
-# hiscore.save_remote_file()
-# hiscore.draw()
-# pygame.time.delay(5000)
-# window.fill(0)
+# This is the start of the script code
+pygame.display.set_caption("Ghost Balls")
 
 while not g.exit:
     if g.game_won:
