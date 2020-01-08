@@ -52,7 +52,7 @@ class Color:
     block_original = block
     grey = (175, 175, 175)
 
-    def dimmer(self, color_param, steps):
+    def dimmer(self, color_param, steps) -> tuple:
         new_color = []
         cdiff = (
             color_param[0] - self.background[0], color_param[1] - self.background[1],
@@ -167,7 +167,7 @@ class Frame:
         color.block = color.block_original
         color.ball = color.ball_original
 
-    def hit(self, pos: tuple):
+    def hit(self, pos: tuple) -> bool:
         if pos[0] < 0 or pos[1] < 0:
             click_sound.play()
             return True
@@ -184,7 +184,7 @@ class Frame:
         y = self.board.board_size[1] + self.info.size[1]
         return x, y
 
-    def x_size(self):
+    def x_size(self) -> int:
         return self.size()[0] * g.sqr_size
 
     def y_size(self):
@@ -217,7 +217,7 @@ class Targets:
                 friends.append(candidate)
                 self.find_new_friends(candidate, friends)
 
-    def hit(self, pos: tuple):
+    def hit(self, pos: tuple) -> bool:
         return_val = False
         if pos in self.positions:
             return_val = True
@@ -256,7 +256,7 @@ class Blocks:
         for pos in self.positions:
             self.draw_cell(pos, color.block)
 
-    def hit(self, pos: tuple):
+    def hit(self, pos: tuple) -> bool:
         if pos in self.positions:
             click_sound.play()
             return True
@@ -277,7 +277,7 @@ class Defender:
         self.old_pos = self.start_pos
         self.toward = directions['stopped']
 
-    def hit(self, pos: tuple):
+    def hit(self, pos: tuple) -> bool:
         poslist = []
         for x in range(-4, 5, 1):
             for y in range(-1, 1, 1):
@@ -441,7 +441,7 @@ class Hiscore:
         self.hiscore_data_tulist = self.process_data(data)
 
     @staticmethod
-    def process_data(data: str):
+    def process_data(data: str) -> list:
         data_list = data.split('\r\n')
         while '' in data_list:
             data_list.remove('')
@@ -452,7 +452,7 @@ class Hiscore:
         tulist.sort(key=take_second, reverse=True)
         return tulist
 
-    def read_remote_file(self):
+    def read_remote_file(self) -> str:
         global hiscore_raw_data
         result = ""
         try:
@@ -465,7 +465,7 @@ class Hiscore:
             pass
         return result
 
-    def read_local_file(self):
+    def read_local_file(self) -> str:
         result = ''
         try:
             hiscore_file = open(self.filename, 'rb')
@@ -475,7 +475,7 @@ class Hiscore:
             pass
         return result
 
-    def save_local_file(self):
+    def save_local_file(self) -> bool:
         try:
             hiscore_file = open(self.filename, 'w')
             for tu in self.hiscore_data_tulist:
@@ -485,7 +485,7 @@ class Hiscore:
         except:
             return False
 
-    def save_remote_file(self):
+    def save_remote_file(self) -> bool:
         self.save_local_file()
         try:
             hiscore_file = open(self.filename, 'rb')
