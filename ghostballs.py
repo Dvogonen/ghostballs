@@ -231,7 +231,7 @@ class Targets:
             frame.info.old_score = frame.info.new_score
             frame.info.new_score += 1
 
-        if self.positions == []:
+        if not self.positions:
             g.game_won = True
         return return_val
 
